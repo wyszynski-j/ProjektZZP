@@ -3,7 +3,7 @@ package zzp2025.todo_app.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import zzp2025.todo_app.model.User;
+import zzp2025.todo_app.entity.User;
 import zzp2025.todo_app.repository.UserRepository;
 
 import java.util.Optional;

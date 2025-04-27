@@ -1,7 +1,7 @@
 package zzp2025.todo_app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import zzp2025.todo_app.model.User;
+import zzp2025.todo_app.entity.User;
 
 import java.util.Optional;
 

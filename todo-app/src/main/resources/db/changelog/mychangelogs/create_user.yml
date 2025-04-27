@@ -1,0 +1,31 @@
+databaseChangeLog:
+  -  changeSet:
+       id: create_user
+       author: Wyszyn
+       changes:
+         -  createTable:
+              tableName: users
+              columns:
+                -  column:
+                     name: id
+                     type: int
+                     constraints:
+                        primaryKey: true
+                        nullable: false
+                - column:
+                    name: email
+                    type: varchar(200)
+                    constraints:
+                      nullable: false
+                      unique: true
+                - column:
+                    name: username
+                    type: varchar(100)
+                    constraints:
+                      nullable: false
+                      unique: true
+                - column:
+                    name: password
+                    type: varchar(120)
+                    constraints:
+                      nullable: false

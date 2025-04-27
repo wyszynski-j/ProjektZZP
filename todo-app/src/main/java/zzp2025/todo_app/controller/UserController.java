@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import zzp2025.todo_app.model.User;
+import zzp2025.todo_app.entity.User;
 import zzp2025.todo_app.service.UserService;
 
 @RestController
