@@ -49,7 +49,3 @@ Aplikacja internetowa do zarządzania zadaniami, stworzona z wykorzystaniem Spri
 
 - **Bezpieczeństwo:**
   - Spring Security
-
-- **Baza danych:**
-  - H2 z wykorzystaniem JPA i Hibernate
-  - Liquibase z formatem XML do tworzenia danych inicjalnych
