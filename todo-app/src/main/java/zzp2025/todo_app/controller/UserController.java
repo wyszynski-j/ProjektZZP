@@ -17,7 +17,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody UserDTO request) {
         User user = new User();
         user.setEmail(request.getEmail());
