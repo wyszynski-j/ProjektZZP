@@ -8,5 +8,5 @@ import lombok.Setter;
 public class CategoryDTO {
 
     private String name;
-    private Long ownerId;  // ID użytkownika, który jest właścicielem kategorii
+   // private Long ownerId;  // ID użytkownika, który jest właścicielem kategorii
 }

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import zzp2025.todo_app.entity.Category;
 import zzp2025.todo_app.entity.User;
-import zzp2025.todo_app.entity.dto.CategoryDTO;
 import zzp2025.todo_app.repository.CategoryRepository;
 import zzp2025.todo_app.repository.UserRepository;
 
@@ -18,32 +17,47 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
 
-    public Category createCategory(CategoryDTO categoryDTO) {
-        // Znajdź użytkownika po ID
-        Optional<User> userOpt = userRepository.findById(categoryDTO.getOwnerId());
-        if (userOpt.isEmpty()) {
-            throw new IllegalArgumentException("User not found");
+    public Category createCategory(String name, String username) {
+        User owner = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        boolean categoryExists = categoryRepository.existsByNameAndOwner(name, owner);
+
+        if (categoryExists) {
+            throw new RuntimeException("Category with this name already exists for the user");
         }
-
-        User owner = userOpt.get();
-
-        // Tworzymy nową kategorię
         Category category = new Category();
-        category.setName(categoryDTO.getName());
+        category.setName(name);
         category.setOwner(owner);
 
         return categoryRepository.save(category);
     }
 
-    public List<Category> getCategoriesByUser(Long userId) {
-        return categoryRepository.findByOwnerId(userId);
+
+
+    public Optional<Category> getCategoryByIdAndUsername(Long id, String username) {
+        return categoryRepository.findByIdAndOwner_Username(id, username);
     }
 
-    public Optional<Category> getCategoryById(Long id) {
-        return categoryRepository.findById(id);
+    public List<Category> getCategoriesByUsername(String username) {
+        return categoryRepository.findByOwner_Username(username);
+    }
+    public boolean deleteCategory(Long id, String username) {
+        Optional<Category> category = categoryRepository.findByIdAndOwner_Username(id, username);
+
+        if (category.isPresent()) {
+            categoryRepository.delete(category.get());
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void deleteCategory(Long id) {
-        categoryRepository.deleteById(id);
+    public Category updateCategory(Long id, String name, String username) {
+        Category category = categoryRepository.findByIdAndOwner_Username(id, username)
+                .orElseThrow(() -> new RuntimeException("Category not found or not owned by the user"));
+
+        category.setName(name);
+        return categoryRepository.save(category);
     }
 }

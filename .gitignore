@@ -41,3 +41,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/data
+data/tododb.mv.db
+data/tododb.trace.db
