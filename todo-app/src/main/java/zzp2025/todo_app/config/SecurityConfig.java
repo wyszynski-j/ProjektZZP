@@ -36,7 +36,7 @@ public class SecurityConfig {
         corsConfig.setAllowCredentials(true); // ciasteczka
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", corsConfig); // CORS dla api
+        source.registerCorsConfiguration("/**", corsConfig);
         return source;
     }
 
@@ -45,16 +45,17 @@ public class SecurityConfig {
     SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .securityMatcher("/api/**")
-                    .authorizeHttpRequests(auth -> {
-                        auth.requestMatchers("/api/users/register", "/api/auth/login").permitAll();
-                        auth.requestMatchers("/api/**").authenticated()
-                        .anyRequest().authenticated();
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/api/users/register", "/api/auth/login").permitAll();
+                    auth.requestMatchers("/api/**").authenticated();
                 })
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // Brak sesji
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 
     @Bean
     @Order(2)
