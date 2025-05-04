@@ -1,0 +1,19 @@
+<div class="register-container">
+  <h2 class="title">Create Your Account</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+    <div class="input-group">
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" type="email" placeholder="Enter your email" autocomplete="email" />
+    </div>
+    <div class="input-group">
+      <label for="username">Username</label>
+      <input id="username" formControlName="username" type="text" placeholder="Choose a username" autocomplete="username" />
+    </div>
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input id="password" formControlName="password" type="password" placeholder="Create a password" autocomplete="new-password" />
+    </div>
+    <button type="submit" class="btn btn-submit">Register</button>
+  </form>
+  <p class="footer-text">Already have an account? <a href="/login">Sign in here</a></p>
+</div>

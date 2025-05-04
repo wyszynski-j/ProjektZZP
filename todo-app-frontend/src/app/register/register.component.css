@@ -1,4 +1,4 @@
-.login-container {
+.register-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,7 +19,7 @@
   animation: fadeInDown 1s ease-out;
 }
 
-.login-form {
+.register-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -28,7 +28,15 @@
 }
 
 .input-group {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.9;
 }
 
 .input-group input {
@@ -118,7 +126,7 @@
     font-size: 2rem;
   }
 
-  .login-form {
+  .register-form {
     max-width: 90%;
   }
 
