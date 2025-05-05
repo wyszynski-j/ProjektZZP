@@ -1,20 +1,58 @@
-<div class="task-container">
-  <h1 class="title">Your Tasks</h1>
-  <div *ngIf="tasks.length > 0; else noTasks" class="task-list">
-    <div class="task-card" *ngFor="let task of tasks">
-      <div class="task-content">
-        <h3 class="task-title">{{ task.title }}</h3>
-        <p class="task-status">Status: {{ task.status }}</p>
-      </div>
-      <div class="task-actions">
-        <button class="btn-action btn-edit" (click)="editTask(task)">Edit</button>
-        <button class="btn-action btn-delete" (click)="deleteTask(task)">Delete</button>
+<div class="container my-5">
+  <h1 class="text-center mb-4">Your Tasks</h1>
+
+  <!-- Formularz dodawania / edycji -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <form>
+        <div class="mb-3">
+          <label for="taskTitle" class="form-label">Title</label>
+          <input id="taskTitle" type="text" class="form-control" [(ngModel)]="formTask.title" name="title" placeholder="Task title" />
+        </div>
+
+        <div class="mb-3">
+          <label for="taskDescription" class="form-label">Description</label>
+          <input id="taskDescription" type="text" class="form-control" [(ngModel)]="formTask.description" name="description" placeholder="Description" />
+        </div>
+
+        <div class="mb-3">
+          <label for="taskStatus" class="form-label">Status</label>
+          <select id="taskStatus" class="form-select" [(ngModel)]="formTask.status" name="status">
+            <option value="NEW">TODO</option>
+            <option value="IN_PROGRESS">In Progress</option>
+            <option value="DONE">Done</option>
+          </select>
+        </div>
+
+        <button type="button" class="btn btn-primary me-2" (click)="isEditing ? updateTask() : addTask()">
+          {{ isEditing ? 'Update Task' : 'Add Task' }}
+        </button>
+        <button *ngIf="isEditing" type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Lista tasków -->
+  <div *ngIf="tasks.length > 0; else noTasks" class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col" *ngFor="let task of tasks">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ task.title }}</h5>
+          <p class="card-text">{{ task.description }}</p>
+          <p class="card-text">Status: {{ task.status }}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button class="btn btn-sm btn-outline-primary" (click)="editTask(task)">Edit</button>
+          <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task)">Delete</button>
+        </div>
       </div>
     </div>
-    <button class="btn-add" (click)="addTask()">Add New Task</button>
   </div>
+
+  <!-- Gdy brak tasków -->
   <ng-template #noTasks>
-    <p class="no-tasks">No tasks found.</p>
-    <button class="btn-add" (click)="addTask()">Add New Task</button>
+    <p class="text-muted text-center mt-4">No tasks found.</p>
   </ng-template>
 </div>
+
+
