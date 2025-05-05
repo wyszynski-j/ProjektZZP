@@ -2,6 +2,7 @@
   <h1 class="text-center mb-4">Your Tasks</h1>
 
   <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-outline-primary me-2" (click)="goToCategories()">Manage Categories</button>
     <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
   </div>
 
@@ -27,6 +28,17 @@
             <option value="DONE">Done</option>
           </select>
         </div>
+
+        <div class="mb-3">
+          <label for="taskCategory" class="form-label">Category</label>
+          <select id="taskCategory" class="form-select" [(ngModel)]="formTask.categoryId" name="categoryId">
+            <option [ngValue]="null">-- No Category --</option>
+            <option *ngFor="let category of categories" [ngValue]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+        
 
         <button type="button" class="btn btn-primary me-2" (click)="isEditing ? updateTask() : addTask()">
           {{ isEditing ? 'Update Task' : 'Add Task' }}
@@ -58,5 +70,3 @@
     <p class="text-muted text-center mt-4">No tasks found.</p>
   </ng-template>
 </div>
-
-

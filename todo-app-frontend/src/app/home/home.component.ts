@@ -27,10 +27,13 @@ export class HomeComponent {
     const token = localStorage.getItem('token');
     if (token) {
       this.loadTasks(token);
+      this.loadCategories(token);
     } else {
       this.router.navigate(['/login']);
     }
   }
+
+  categories: any[] = [];
 
   loadTasks(token: string) {
     this.api.getTasks(token).subscribe({
@@ -39,6 +42,17 @@ export class HomeComponent {
       },
       error: (err) => {
         console.error('Error loading tasks', err);
+      },
+    });
+  }
+
+  loadCategories(token: string): void {
+    this.api.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (err) => {
+        console.error('Error loading categories', err);
       },
     });
   }
@@ -105,6 +119,10 @@ resetForm() {
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
+  }
+
+  goToCategories() {
+    this.router.navigate(['/category']);
   }
 
 }

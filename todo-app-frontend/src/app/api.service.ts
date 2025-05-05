@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -45,5 +46,38 @@ export class ApiService {
   deleteTask(token: string, taskId: number): Observable<void> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.delete<void>(`${this.BASE_URL}/tasks/${taskId}`, { headers });
-  }  
+  }
+  
+  createCategory(category: { name: string }) {
+    return this.http.post<Category>(`${this.BASE_URL}/categories`, category, this.getAuthHeaders());
+  }
+  
+  getCategories() {
+    return this.http.get<Category[]>(`${this.BASE_URL}/categories`, this.getAuthHeaders());
+  }
+  
+  updateCategory(id: number, category: { name: string }) {
+    return this.http.put<Category>(`${this.BASE_URL}/categories/${id}`, category, this.getAuthHeaders());
+  }
+  
+  deleteCategory(id: number) {
+    return this.http.delete<void>(`${this.BASE_URL}/categories/${id}`, this.getAuthHeaders());
+  }
+  
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token') || '';
+    return {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      })
+    };
+  }
+  
 }
+export interface Category {
+  id: number;
+  name: string;
+  ownerId: number;
+}
+

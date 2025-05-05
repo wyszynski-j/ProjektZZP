@@ -1,8 +1,10 @@
-<div class="welcome-container">
-  <h1 class="title">Welcome to Our Application</h1>
-  <p class="subtitle">Join us today or sign in to continue your journey</p>
-  <div class="button-group">
-    <button class="btn btn-login" (click)="goToLogin()">Login</button>
-    <button class="btn btn-register" (click)="goToRegister()">Register</button>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="text-center">
+    <h1 class="display-4 mb-3">Welcome to Our Application</h1>
+    <p class="lead mb-4">Join us today or sign in to continue your journey</p>
+    <div class="d-flex justify-content-center gap-3">
+      <button class="btn btn-primary px-4" (click)="goToLogin()">Login</button>
+      <button class="btn btn-outline-primary px-4" (click)="goToRegister()">Register</button>
+    </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="register-container">
+<!-- <div class="register-container">
   <h2 class="title">Create Your Account</h2>
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
     <div class="input-group">
@@ -16,4 +16,50 @@
     <button type="submit" class="btn btn-submit">Register</button>
   </form>
   <p class="footer-text">Already have an account? <a href="/login">Sign in here</a></p>
+</div> -->
+
+<div class="container mt-5 d-flex justify-content-center">
+  <div class="card p-4 shadow" style="width: 100%; max-width: 500px;">
+    <h2 class="text-center mb-4">Create Your Account</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          id="email"
+          formControlName="email"
+          type="email"
+          class="form-control"
+          placeholder="Enter your email"
+          autocomplete="email"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          id="username"
+          formControlName="username"
+          type="text"
+          class="form-control"
+          placeholder="Choose a username"
+          autocomplete="username"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          class="form-control"
+          placeholder="Create a password"
+          autocomplete="new-password"
+        />
+      </div>
+      <button type="submit" class="btn btn-success w-100">Register</button>
+    </form>
+    <p class="text-center mt-3">
+      Already have an account? <a href="/login">Sign in here</a>
+    </p>
+  </div>
 </div>
+
