@@ -22,7 +22,7 @@
 
         <div class="mb-3">
           <label for="taskStatus" class="form-label">Status</label>
-          <select id="taskStatus" class="form-select" [(ngModel)]="formTask.status" name="status">
+          <select id="taskStatus" class="form-select" [(ngModel)]="formTask.statusId" name="status">
             <option value="NEW">TODO</option>
             <option value="IN_PROGRESS">In Progress</option>
             <option value="DONE">Done</option>
@@ -55,7 +55,6 @@
         <div class="card-body">
           <h5 class="card-title">{{ task.title }}</h5>
           <p class="card-text">{{ task.description }}</p>
-          <p class="card-text">Status: {{ task.status }}</p>
         </div>
         <div class="card-footer d-flex justify-content-between">
           <button class="btn btn-sm btn-outline-primary" (click)="editTask(task)">Edit</button>

@@ -39,42 +39,58 @@
         </insert>
     </changeSet>
 
-    <!-- Dodanie zadań -->
+    <!-- Dodanie statusow -->
     <changeSet id="3" author="init">
-        <insert tableName="tasks">
-            <column name="title" value="Przygotować prezentację"/>
-            <column name="description" value="Prezentacja na temat nowych technologii"/>
-            <column name="status" value="NEW"/>
-            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Praca' AND user_id = (SELECT id FROM users WHERE username = 'admin') LIMIT 1)"/>
+        <insert tableName="statuses">
+            <column name="title" value="Status1"/>
             <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
         </insert>
-        <insert tableName="tasks">
-            <column name="title" value="Zakupy spożywcze"/>
-            <column name="description" value="Kupić mleko, chleb i jajka"/>
-            <column name="status" value="IN_PROGRESS"/>
-            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Dom' AND user_id = (SELECT id FROM users WHERE username = 'admin') LIMIT 1)"/>
+        <insert tableName="statuses">
+            <column name="title" value="Status2"/>
             <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
         </insert>
-        <insert tableName="tasks">
-            <column name="title" value="Napisać esej"/>
-            <column name="description" value="Esej na temat programowania w Javie"/>
-            <column name="status" value="NEW"/>
-            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Studia' AND user_id = (SELECT id FROM users WHERE username = 'user') LIMIT 1)"/>
+        <insert tableName="statuses">
+            <column name="title" value="Status3"/>
             <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'user')"/>
         </insert>
-        <insert tableName="tasks">
-            <column name="title" value="Nauka gry na gitarze"/>
-            <column name="description" value="Przećwiczyć nowe akordy"/>
-            <column name="status" value="IN_PROGRESS"/>
-            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Hobby' AND user_id = (SELECT id FROM users WHERE username = 'user') LIMIT 1)"/>
+        <insert tableName="statuses">
+            <column name="title" value="Status4"/>
             <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'user')"/>
-        </insert>
-        <insert tableName="tasks">
-            <column name="title" value="Wysłać raport"/>
-            <column name="description" value="Raport miesięczny dla szefa"/>
-            <column name="status" value="COMPLETED"/>
-            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Praca' AND user_id = (SELECT id FROM users WHERE username = 'admin') LIMIT 1)"/>
-            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
         </insert>
     </changeSet>
+
+    <changeSet id="4" author="init">
+        <!-- Zadania dla admina -->
+        <insert tableName="tasks">
+            <column name="title" value="Zrobić raport roczny"/>
+            <column name="description" value="Przygotować raport roczny dla zarządu"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
+            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Praca' AND user_id = (SELECT id FROM users WHERE username = 'admin'))"/>
+            <column name="status_id" valueComputed="(SELECT id FROM statuses WHERE title = 'Status1' AND user_id = (SELECT id FROM users WHERE username = 'admin'))"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Naprawić zlew"/>
+            <column name="description" value="Zlewozmywak przecieka – trzeba sprawdzić syfon"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
+            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Dom' AND user_id = (SELECT id FROM users WHERE username = 'admin'))"/>
+            <column name="status_id" valueComputed="(SELECT id FROM statuses WHERE title = 'Status2' AND user_id = (SELECT id FROM users WHERE username = 'admin'))"/>
+        </insert>
+
+        <!-- Zadania dla usera -->
+        <insert tableName="tasks">
+            <column name="title" value="Przygotować prezentację"/>
+            <column name="description" value="Prezentacja na temat systemów operacyjnych"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'user')"/>
+            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Studia' AND user_id = (SELECT id FROM users WHERE username = 'user'))"/>
+            <column name="status_id" valueComputed="(SELECT id FROM statuses WHERE title = 'Status3' AND user_id = (SELECT id FROM users WHERE username = 'user'))"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Pomalować figurki"/>
+            <column name="description" value="Dokończyć malowanie figurek Warhammera"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'user')"/>
+            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Hobby' AND user_id = (SELECT id FROM users WHERE username = 'user'))"/>
+            <column name="status_id" valueComputed="(SELECT id FROM statuses WHERE title = 'Status4' AND user_id = (SELECT id FROM users WHERE username = 'user'))"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

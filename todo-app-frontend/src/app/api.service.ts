@@ -27,7 +27,7 @@ export class ApiService {
   addTask(task: {
     title: string;
     description: string;
-    status: string;
+    statusId: number | null;
     categoryId: number | null;
   }, token: string): Observable<any> {
     const headers = new HttpHeaders({
@@ -36,13 +36,13 @@ export class ApiService {
     });
     return this.http.post(`${this.BASE_URL}/tasks`, task, { headers });
   }
-    
+
 
   updateTask(token: string, task: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.put<any>(`${this.BASE_URL}/tasks/${task.id}`, task, { headers });
   }
-  
+
   deleteTask(token: string, taskId: number): Observable<void> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.delete<void>(`${this.BASE_URL}/tasks/${taskId}`, { headers });

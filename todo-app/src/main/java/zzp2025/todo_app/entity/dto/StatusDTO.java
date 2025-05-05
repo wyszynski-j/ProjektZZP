@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskDTO {
+public class StatusDTO {
     private String title;
-    private String description;
-    private Long statusId;
-    private Long categoryId;
 }

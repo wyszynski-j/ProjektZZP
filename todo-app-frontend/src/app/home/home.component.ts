@@ -17,7 +17,7 @@ export class HomeComponent {
     id: null,
     title: '',
     description: '',
-    status: 'TODO',
+    statusId: null,
     categoryId: null
   };
 
@@ -38,7 +38,7 @@ export class HomeComponent {
   loadTasks(token: string) {
     this.api.getTasks(token).subscribe({
       next: (tasks) => {
-        this.tasks = tasks.filter(task => task.title && task.status);
+        this.tasks = tasks.filter(task => task.title);
       },
       error: (err) => {
         console.error('Error loading tasks', err);
@@ -112,7 +112,7 @@ cancelEdit() {
 }
 
 resetForm() {
-  this.formTask = { id: null, title: '', description: '', status: 'TODO', categoryId: null };
+  this.formTask = { id: null, title: '', description: '', statusId: null, categoryId: null };
   this.isEditing = false;
 }
 

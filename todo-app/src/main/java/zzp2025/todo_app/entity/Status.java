@@ -1,5 +1,6 @@
 package zzp2025.todo_app.entity;
 
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "tasks")
-public class Task {
+@Table(name = "statuses", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"title", "user_id"})
+})
+public class Status {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,18 +22,8 @@ public class Task {
     @Column(nullable = false)
     private String title;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    private Status status;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
 }
+

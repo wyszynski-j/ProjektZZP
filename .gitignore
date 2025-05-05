@@ -44,3 +44,5 @@ build/
 /data
 data/tododb.mv.db
 data/tododb.trace.db
+data/*.mv.db
+data/*.trace.db
