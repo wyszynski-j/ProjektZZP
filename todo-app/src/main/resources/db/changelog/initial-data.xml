@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Dodanie użytkowników -->
+    <changeSet id="1" author="init">
+        <insert tableName="users">
+            <column name="email" value="admin@example.com"/>
+            <column name="username" value="admin"/>
+            <column name="password" value="$2a$12$Ajzj1U.eHzOzNaEu1tLxae.WhGPfWtwd46asP1T6PzQ5R4vYec0L6"/> <!-- hasło: admin123 -->
+        </insert>
+        <insert tableName="users">
+            <column name="email" value="user@example.com"/>
+            <column name="username" value="user"/>
+            <column name="password" value="$2a$12$bLUdXt9vlpZIOUoh9iJc9.HZnVX1TDxmxs6zxOxDgpS6OjEJAFOEa"/> <!-- hasło: admin123 -->
+        </insert>
+    </changeSet>
+
+    <!-- Dodanie kategorii -->
+    <changeSet id="2" author="init">
+        <insert tableName="categories">
+            <column name="name" value="Praca"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Dom"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Studia"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'user')"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Hobby"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'user')"/>
+        </insert>
+    </changeSet>
+
+    <!-- Dodanie zadań -->
+    <changeSet id="3" author="init">
+        <insert tableName="tasks">
+            <column name="title" value="Przygotować prezentację"/>
+            <column name="description" value="Prezentacja na temat nowych technologii"/>
+            <column name="status" value="NEW"/>
+            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Praca' AND user_id = (SELECT id FROM users WHERE username = 'admin') LIMIT 1)"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Zakupy spożywcze"/>
+            <column name="description" value="Kupić mleko, chleb i jajka"/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Dom' AND user_id = (SELECT id FROM users WHERE username = 'admin') LIMIT 1)"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Napisać esej"/>
+            <column name="description" value="Esej na temat programowania w Javie"/>
+            <column name="status" value="NEW"/>
+            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Studia' AND user_id = (SELECT id FROM users WHERE username = 'user') LIMIT 1)"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'user')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Nauka gry na gitarze"/>
+            <column name="description" value="Przećwiczyć nowe akordy"/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Hobby' AND user_id = (SELECT id FROM users WHERE username = 'user') LIMIT 1)"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'user')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Wysłać raport"/>
+            <column name="description" value="Raport miesięczny dla szefa"/>
+            <column name="status" value="COMPLETED"/>
+            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Praca' AND user_id = (SELECT id FROM users WHERE username = 'admin') LIMIT 1)"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
