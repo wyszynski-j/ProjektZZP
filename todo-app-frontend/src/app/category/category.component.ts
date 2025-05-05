@@ -28,6 +28,9 @@ export class CategoryComponent implements OnInit {
   }
 
   loadCategories(token: string): void {
+    if (!token) {
+      this.router.navigate(['/login']);
+    }
     this.api.getCategories().subscribe({
       next: (categories) => {
         this.categories = categories;

@@ -29,7 +29,6 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       this.api.register(this.registerForm.value).subscribe({
         next: (res) => {
-          alert('Registration successful!');
           this.router.navigate(['/login']);
         },
         error: (err) => {

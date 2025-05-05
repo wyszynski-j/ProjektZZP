@@ -3,6 +3,7 @@
 
   <div class="d-flex justify-content-end mb-3">
     <button class="btn btn-outline-primary me-2" (click)="goToCategories()">Manage Categories</button>
+    <button class="btn btn-outline-primary me-2" (click)="goToStatuses()">Manage Statuses</button>
     <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
   </div>
 
@@ -10,34 +11,57 @@
   <div class="card mb-4">
     <div class="card-body">
       <form>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label for="taskTitle" class="form-label">Title</label>
           <input id="taskTitle" type="text" class="form-control" [(ngModel)]="formTask.title" name="title" placeholder="Task title" />
+        </div> -->
+
+        <div class="mb-3">
+          <label for="taskTitle" class="form-label">Title</label>
+          <input id="taskTitle" type="text" class="form-control"
+                 [ngClass]="{'is-invalid': formSubmitted && !formTask.title?.trim()}"
+                 [(ngModel)]="formTask.title" name="title" placeholder="Task title" />
+          <div *ngIf="formSubmitted && !formTask.title?.trim()" class="invalid-feedback">
+            Title is required.
+          </div>
         </div>
+        
 
         <div class="mb-3">
           <label for="taskDescription" class="form-label">Description</label>
           <input id="taskDescription" type="text" class="form-control" [(ngModel)]="formTask.description" name="description" placeholder="Description" />
         </div>
 
-        <div class="mb-3">
-          <label for="taskStatus" class="form-label">Status</label>
-          <select id="taskStatus" class="form-select" [(ngModel)]="formTask.statusId" name="status">
-            <option value="NEW">TODO</option>
-            <option value="IN_PROGRESS">In Progress</option>
-            <option value="DONE">Done</option>
-          </select>
-        </div>
+        
 
         <div class="mb-3">
+          <label for="taskStatus" class="form-label">Status</label>
+          <select id="taskStatus" class="form-select"
+                  [ngClass]="{'is-invalid': formSubmitted && !formTask.statusId}"
+                  [(ngModel)]="formTask.statusId" name="statusId">
+            <option [ngValue]="null">-- No Status--</option>
+            <option *ngFor="let status of statuses" [ngValue]="status.id">{{ status.title }}</option>
+          </select>
+          <div *ngIf="formSubmitted && !formTask.statusId" class="invalid-feedback">
+            Status is required.
+          </div>
+        </div>
+        
+        <div class="mb-3">
           <label for="taskCategory" class="form-label">Category</label>
-          <select id="taskCategory" class="form-select" [(ngModel)]="formTask.categoryId" name="categoryId">
+          <select id="taskCategory" class="form-select"
+                  [ngClass]="{'is-invalid': formSubmitted && !formTask.categoryId}"
+                  [(ngModel)]="formTask.categoryId" name="categoryId">
             <option [ngValue]="null">-- No Category --</option>
             <option *ngFor="let category of categories" [ngValue]="category.id">
               {{ category.name }}
             </option>
           </select>
+          <div *ngIf="formSubmitted && !formTask.categoryId" class="invalid-feedback">
+            Category is required.
+          </div>
         </div>
+        
         
 
         <button type="button" class="btn btn-primary me-2" (click)="isEditing ? updateTask() : addTask()">
@@ -55,6 +79,12 @@
         <div class="card-body">
           <h5 class="card-title">{{ task.title }}</h5>
           <p class="card-text">{{ task.description }}</p>
+          <p class="card-text">
+            <strong>Status:</strong> {{ getStatusTitle(task.statusId) }}
+          </p>
+          <p class="card-text">
+            <strong>Category:</strong> {{ getCategoryName(task.categoryId) }}
+          </p>
         </div>
         <div class="card-footer d-flex justify-content-between">
           <button class="btn btn-sm btn-outline-primary" (click)="editTask(task)">Edit</button>

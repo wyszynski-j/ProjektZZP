@@ -73,6 +73,25 @@ export class ApiService {
       })
     };
   }
+
+
+  
+  getStatuses() {
+    return this.http.get<Status[]>(`${this.BASE_URL}/statuses`, this.getAuthHeaders());
+  }
+  
+  createStatus(status: { title: string }) {
+    return this.http.post<Status>(`${this.BASE_URL}/statuses`, status, this.getAuthHeaders());
+  }
+  
+  updateStatus(id: number, status: { title: string }) {
+    return this.http.put<Status>(`${this.BASE_URL}/statuses/${id}`, status, this.getAuthHeaders());
+  }
+  
+  deleteStatus(id: number) {
+    return this.http.delete<void>(`${this.BASE_URL}/statuses/${id}`, this.getAuthHeaders());
+  }
+  
   
 }
 export interface Category {
@@ -80,4 +99,11 @@ export interface Category {
   name: string;
   ownerId: number;
 }
+export interface Status {
+  id: number;
+  title: string;
+  ownerId: number;
+}
+
+
 

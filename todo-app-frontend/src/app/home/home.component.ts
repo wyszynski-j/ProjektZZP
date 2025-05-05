@@ -28,12 +28,14 @@ export class HomeComponent {
     if (token) {
       this.loadTasks(token);
       this.loadCategories(token);
+      this.loadStatuses(token);
     } else {
       this.router.navigate(['/login']);
     }
   }
 
   categories: any[] = [];
+  statuses: any[] = [];
 
   loadTasks(token: string) {
     this.api.getTasks(token).subscribe({
@@ -47,6 +49,9 @@ export class HomeComponent {
   }
 
   loadCategories(token: string): void {
+    if (!token) {
+      this.router.navigate(['/login']);
+    }
     this.api.getCategories().subscribe({
       next: (categories) => {
         this.categories = categories;
@@ -57,14 +62,44 @@ export class HomeComponent {
     });
   }
 
+  loadStatuses(token: string): void {
+    if (!token) {
+      this.router.navigate(['/login']);
+    }
+    this.api.getStatuses().subscribe({
+      next: (statuses) => {
+        this.statuses = statuses;
+      },
+      error: (err) => {
+        console.error('Error loading statuses', err);
+      },
+    });
+  }
+
+  getStatusTitle(statusId: number): string {
+    const status = this.statuses.find(s => s.id === statusId);
+    return status ? status.title : 'Unknown';
+  }
+  getCategoryName(categoryId: number): string {
+    const category = this.categories.find(c => c.id === categoryId);
+    return category ? category.name : 'Unknown';
+  }
+  
+
 
 
   isEditing = false;
+  formSubmitted = false;
+
 
   addTask() {
+    this.formSubmitted = true;
+  
+    if (!this.formTask.title?.trim() || !this.formTask.statusId || !this.formTask.categoryId) return;
+  
     const token = localStorage.getItem('token');
     if (!token) return;
-
+  
     this.api.addTask(this.formTask, token).subscribe({
       next: (newTask) => {
         this.tasks.push(newTask);
@@ -75,11 +110,16 @@ export class HomeComponent {
   }
 
 editTask(task: any) {
-  this.formTask = { ...task }; // shallow copy
+  this.formTask = { ...task }; 
   this.isEditing = true;
 }
 
+
 updateTask() {
+  this.formSubmitted = true;
+
+  if (!this.formTask.title?.trim() || !this.formTask.statusId || !this.formTask.categoryId) return;
+
   const token = localStorage.getItem('token');
   if (!token || !this.formTask.id) return;
 
@@ -114,6 +154,7 @@ cancelEdit() {
 resetForm() {
   this.formTask = { id: null, title: '', description: '', statusId: null, categoryId: null };
   this.isEditing = false;
+  this.formSubmitted = false;
 }
 
   logout() {
@@ -124,5 +165,10 @@ resetForm() {
   goToCategories() {
     this.router.navigate(['/category']);
   }
+
+  goToStatuses() {
+    this.router.navigate(['/status']);
+  }
+
 
 }
