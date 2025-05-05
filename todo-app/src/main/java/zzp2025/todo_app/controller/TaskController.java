@@ -6,7 +6,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import zzp2025.todo_app.entity.Task;
-import zzp2025.todo_app.entity.TaskStatus;
 import zzp2025.todo_app.entity.dto.TaskDTO;
 import zzp2025.todo_app.entity.dto.TaskResponseDTO;
 import zzp2025.todo_app.service.TaskService;
@@ -30,7 +29,7 @@ public class TaskController {
         Task createdTask = taskService.createTask(
                 taskDTO.getTitle(),
                 taskDTO.getDescription(),
-                taskDTO.getStatus(),
+                taskDTO.getStatusId(),
                 taskDTO.getCategoryId(),
                 username
         );
@@ -41,15 +40,15 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<List<TaskResponseDTO>> getTasks(
-            @RequestParam(required = false) TaskStatus status,
+            @RequestParam(required = false) Long statusId,
             @RequestParam(required = false) Long categoryId,
             @AuthenticationPrincipal UserDetails userDetails) {
 
         String username = userDetails.getUsername();
         List<Task> tasks;
 
-        if (status != null) {
-            tasks = taskService.getTasksByUsernameAndStatus(username, status);
+        if (statusId != null) {
+            tasks = taskService.getTasksByUsernameAndStatus(username, statusId);
         } else if (categoryId != null) {
             tasks = taskService.getTasksByUsernameAndCategory(username, categoryId);
         } else {
@@ -87,23 +86,10 @@ public class TaskController {
                 id,
                 taskDTO.getTitle(),
                 taskDTO.getDescription(),
-                taskDTO.getStatus(),
+                taskDTO.getStatusId(),
                 taskDTO.getCategoryId(),
                 username
         );
-
-        TaskResponseDTO responseDTO = mapToResponseDTO(updatedTask);
-        return ResponseEntity.ok(responseDTO);
-    }
-
-    @PatchMapping("/{id}/status")
-    public ResponseEntity<TaskResponseDTO> updateTaskStatus(
-            @PathVariable Long id,
-            @RequestBody TaskStatus status,
-            @AuthenticationPrincipal UserDetails userDetails) {
-
-        String username = userDetails.getUsername();
-        Task updatedTask = taskService.updateTaskStatus(id, status, username);
 
         TaskResponseDTO responseDTO = mapToResponseDTO(updatedTask);
         return ResponseEntity.ok(responseDTO);
@@ -129,7 +115,8 @@ public class TaskController {
                 task.getId(),
                 task.getTitle(),
                 task.getDescription(),
-                task.getStatus(),
+                task.getStatus() != null ? task.getStatus().getId() : null,
+                task.getStatus() != null ? task.getStatus().getTitle() : null,
                 task.getCategory() != null ? task.getCategory().getId() : null,
                 task.getCategory() != null ? task.getCategory().getName() : null,
                 task.getOwner().getId()
