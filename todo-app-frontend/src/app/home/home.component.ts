@@ -43,7 +43,7 @@ export class HomeComponent {
     });
   }
 
-  
+
 
   isEditing = false;
 
@@ -58,7 +58,7 @@ export class HomeComponent {
       },
       error: (err) => console.error('Błąd dodawania taska:', err)
     });
-  }  
+  }
 
 editTask(task: any) {
   this.formTask = { ...task }; // shallow copy
@@ -101,5 +101,10 @@ resetForm() {
   this.formTask = { id: null, title: '', description: '', status: 'TODO', categoryId: null };
   this.isEditing = false;
 }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
 
 }
